@@ -224,7 +224,7 @@ export const useSalaryAggregatorWagmi = (parameters: {
   const getEncryptionMethodFor = (functionName: "submitSalary") => {
     const functionAbi = salaryAgg?.abi.find(item => item.type === "function" && item.name === functionName);
     if (!functionAbi) return { method: undefined as string | undefined, error: `Function ABI not found for ${functionName}` } as const;
-    if (!functionAbi.inputs || (functionAbi.inputs as any[]).length === 0)
+    if (!functionAbi.inputs || (functionAbi.inputs as unknown as any[]).length === 0)
       return { method: undefined as string | undefined, error: `No inputs found for ${functionName}` } as const;
     const firstInput = functionAbi.inputs[0]!;
     return { method: getEncryptionMethod(firstInput.internalType), error: undefined } as const;
