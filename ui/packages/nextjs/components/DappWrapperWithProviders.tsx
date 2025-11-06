@@ -31,9 +31,16 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
     setMounted(true);
   }, []);
 
-  // Only render providers on client side to avoid SSR issues with Wagmi/QueryClient
+  // Always render QueryClientProvider to ensure hooks can access it
+  // But delay rendering WagmiProvider and other client-only components until mounted
   if (!mounted) {
-    return null;
+    return (
+      <QueryClientProvider client={queryClient}>
+        <div className="flex flex-col min-h-screen items-center justify-center">
+          <div className="loading loading-spinner loading-lg"></div>
+        </div>
+      </QueryClientProvider>
+    );
   }
 
   // Get wagmiConfig only on client side
@@ -44,7 +51,7 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
       <WagmiProvider config={wagmiConfig}>
         <RainbowKitProvider
           avatar={BlockieAvatar}
-          theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
+          theme={isDarkMode ? darkTheme() : lightTheme()}
         >
           <ProgressBar height="3px" color="#2299dd" />
           <div className={`flex flex-col min-h-screen`}>
