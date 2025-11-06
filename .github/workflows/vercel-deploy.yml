@@ -1,16 +1,20 @@
 name: Vercel Deployment
 
+# Temporarily disabled - focus on local build first
+# on:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
+
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: false  # Completely disabled
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
