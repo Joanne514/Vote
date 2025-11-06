@@ -25,42 +25,6 @@ export const VotingApp = () => {
   const [optionInputs, setOptionInputs] = useState<string[]>(["", ""]);
   const [showCreatePoll, setShowCreatePoll] = useState(false);
 
-  // Connection status indicator
-  const connectionStatus = useMemo(() => {
-    if (!isConnected) {
-      return { status: "disconnected", message: "Wallet not connected", color: "bg-red-100 text-red-800" };
-    }
-    if (chain?.id !== 31337 && chain?.id !== 11155111) {
-      return { status: "wrong-network", message: `Wrong network. Please switch to Hardhat Local (31337) or Sepolia (11155111). Current: ${chain?.id || "unknown"}`, color: "bg-orange-100 text-orange-800" };
-    }
-    if (!voting.contractAddress) {
-      const networkName = chain?.id === 31337 ? "localhost" : "Sepolia";
-      return { status: "no-contract", message: `Contract not found. Please deploy Voting contract to ${networkName}.`, color: "bg-yellow-100 text-yellow-800" };
-    }
-    
-    // Check for insufficient funds error
-    const hasInsufficientFunds = voting.message?.includes("insufficient funds") || voting.message?.includes("INSUFFICIENT_FUNDS");
-    if (hasInsufficientFunds && chain?.id === 11155111) {
-      return { 
-        status: "insufficient-funds", 
-        message: `⚠️ Insufficient funds on Sepolia. Switch to localhost or get Sepolia ETH from faucet.`, 
-        color: "bg-red-100 text-red-800" 
-      };
-    }
-    
-    // Check for relayer errors
-    const hasRelayerError = voting.message?.includes("Relayer") || voting.message?.includes("relayer");
-    if (hasRelayerError && chain?.id === 11155111) {
-      return { 
-        status: "relayer-error", 
-        message: `⚠️ Sepolia Relayer issue detected. Switch to localhost for testing.`, 
-        color: "bg-orange-100 text-orange-800" 
-      };
-    }
-    
-    return { status: "connected", message: `Connected to ${chain?.name || "network"}`, color: "bg-green-100 text-green-800" };
-  }, [isConnected, voting.contractAddress, voting.message, chain]);
-
   if (!isConnected) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 flex items-center justify-center p-6">
