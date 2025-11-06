@@ -12,10 +12,12 @@ import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/helper";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
-export const queryClient = new QueryClient({
+// Create QueryClient instance - must be created outside component to avoid recreating on each render
+const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      retry: false,
     },
   },
 });
@@ -29,9 +31,14 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
     setMounted(true);
   }, []);
 
+  // Only render providers on client side to avoid SSR issues with Wagmi/QueryClient
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
-      <WagmiProvider config={wagmiConfig} queryClient={queryClient}>
+      <WagmiProvider config={wagmiConfig}>
         <RainbowKitProvider
           avatar={BlockieAvatar}
           theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
