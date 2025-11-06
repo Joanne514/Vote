@@ -8,9 +8,15 @@ const path = require('path');
 const sdkSource = path.join(__dirname, '../../fhevm-sdk/dist');
 const sdkDest = path.join(__dirname, '../node_modules/@fhevm-sdk');
 
+console.log('🔍 Setup SDK Script');
+console.log('SDK Source:', sdkSource);
+console.log('SDK Dest:', sdkDest);
+console.log('SDK Source exists:', fs.existsSync(sdkSource));
+
 // Create @fhevm-sdk directory
 const nodeModulesDir = path.join(__dirname, '../node_modules');
 if (!fs.existsSync(nodeModulesDir)) {
+  console.log('Creating node_modules directory...');
   fs.mkdirSync(nodeModulesDir, { recursive: true });
 }
 
@@ -36,13 +42,24 @@ const sdkPackageJson = path.join(__dirname, '../../fhevm-sdk/package.json');
 const destPackageJson = path.join(sdkDest, 'package.json');
 
 if (fs.existsSync(sdkSource)) {
+  console.log('📦 Copying SDK from', sdkSource, 'to', sdkDest);
   copyRecursiveSync(sdkSource, sdkDest);
   if (fs.existsSync(sdkPackageJson)) {
     fs.copyFileSync(sdkPackageJson, destPackageJson);
+    console.log('✅ SDK package.json copied');
   }
   console.log('✅ SDK copied to node_modules/@fhevm-sdk');
+  
+  // Verify the copy was successful
+  if (fs.existsSync(sdkDest)) {
+    console.log('✅ Verification: @fhevm-sdk directory exists');
+  } else {
+    console.error('❌ Verification failed: @fhevm-sdk directory not found');
+    process.exit(1);
+  }
 } else {
   console.error('❌ SDK dist directory not found at:', sdkSource);
-  console.log('This is expected if SDK is not built yet. Continuing...');
+  console.error('Please ensure SDK is built before running this script.');
+  process.exit(1);
 }
 
