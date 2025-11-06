@@ -83,16 +83,16 @@ export const useSalaryAggregatorWagmi = (parameters: {
   // Debug: Log query status
   useEffect(() => {
     console.log("Query status:", {
-      countEnabled: countResult.query?.enabled,
+      countEnabled: Boolean(hasContract && hasProvider),
       countData: countResult.data,
       countError: countResult.error,
       countIsFetching: countResult.isFetching,
-      sumEnabled: sumHandleResult.query?.enabled,
+      sumEnabled: Boolean(hasContract && hasProvider),
       sumData: sumHandleResult.data ? "present" : "empty",
       sumError: sumHandleResult.error,
       sumIsFetching: sumHandleResult.isFetching,
     });
-  }, [countResult.data, countResult.error, countResult.isFetching, countResult.query?.enabled, sumHandleResult.data, sumHandleResult.error, sumHandleResult.isFetching, sumHandleResult.query?.enabled]);
+  }, [countResult.data, countResult.error, countResult.isFetching, hasContract, hasProvider, sumHandleResult.data, sumHandleResult.error, sumHandleResult.isFetching]);
 
   // Function to manually refresh contract data
   const refreshContractData = useCallback(async () => {
