@@ -261,14 +261,14 @@ export const useVotingWagmi = (parameters: {
   // Decrypt vote counts
   const requests = useMemo(() => {
     if (!hasContract || !finalVotingContract || !pollInfo || selectedPollId === undefined) return undefined;
-    const reqs: Array<{ handle: string; contractAddress: string }> = [];
+    const reqs: Array<{ handle: string; contractAddress: `0x${string}` }> = [];
     for (let i = 0; i < pollInfo.optionCount; i++) {
       const handle = encryptedCounts[i];
       if (handle && handle !== ethers.ZeroHash) {
-        reqs.push({ handle, contractAddress: finalVotingContract.address });
+        reqs.push({ handle, contractAddress: finalVotingContract.address as `0x${string}` });
       }
     }
-    return reqs.length > 0 ? reqs : undefined;
+    return reqs.length > 0 ? (reqs as const) : undefined;
   }, [hasContract, finalVotingContract, pollInfo, selectedPollId, encryptedCounts]);
 
   const { canDecrypt, decrypt, isDecrypting, message: decryptMsg, results } = useFHEDecrypt({
@@ -362,7 +362,7 @@ export const useVotingWagmi = (parameters: {
   }, [hasContract, hasProvider, finalVotingContract?.address, queryClient, pollCountResult, pollInfoResult, hasVotedResult, selectedPollId]);
 
   // Encrypt vote
-  const { encryptWith } = useFHEEncryption({ instance, ethersSigner: ethersSigner as any, contractAddress: finalVotingContract?.address });
+  const { encryptWith } = useFHEEncryption({ instance, ethersSigner: ethersSigner as any, contractAddress: finalVotingContract?.address as `0x${string}` | undefined });
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState("");
 

@@ -192,7 +192,7 @@ export const useSalaryAggregatorWagmi = (parameters: {
   // Decrypt sum
   const requests = useMemo(() => {
     if (!hasContract || !sumHandle || sumHandle === ethers.ZeroHash) return undefined;
-    return [{ handle: sumHandle, contractAddress: salaryAgg!.address } as const];
+    return [{ handle: sumHandle, contractAddress: salaryAgg!.address as `0x${string}` } as const];
   }, [hasContract, salaryAgg?.address, sumHandle]);
 
   const { canDecrypt, decrypt, isDecrypting, message: decryptMsg, results } = useFHEDecrypt({
@@ -217,7 +217,7 @@ export const useSalaryAggregatorWagmi = (parameters: {
   }, [decryptedSum, count]);
 
   // Submit salary
-  const { encryptWith } = useFHEEncryption({ instance, ethersSigner: ethersSigner as any, contractAddress: salaryAgg?.address });
+  const { encryptWith } = useFHEEncryption({ instance, ethersSigner: ethersSigner as any, contractAddress: salaryAgg?.address as `0x${string}` | undefined });
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState("");
 

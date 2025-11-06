@@ -95,7 +95,7 @@ export const useFHECounterWagmi = (parameters: {
   // Decrypt (reuse existing decrypt hook for simplicity)
   const requests = useMemo(() => {
     if (!hasContract || !countHandle || countHandle === ethers.ZeroHash) return undefined;
-    return [{ handle: countHandle, contractAddress: fheCounter!.address } as const];
+    return [{ handle: countHandle, contractAddress: fheCounter!.address as `0x${string}` } as const];
   }, [hasContract, fheCounter?.address, countHandle]);
 
   const {
@@ -128,7 +128,7 @@ export const useFHECounterWagmi = (parameters: {
   const decryptCountHandle = decrypt;
 
   // Mutations (increment/decrement)
-  const { encryptWith } = useFHEEncryption({ instance, ethersSigner: ethersSigner as any, contractAddress: fheCounter?.address });
+  const { encryptWith } = useFHEEncryption({ instance, ethersSigner: ethersSigner as any, contractAddress: fheCounter?.address as `0x${string}` | undefined });
   const canUpdateCounter = useMemo(
     () => Boolean(hasContract && instance && hasSigner && !isProcessing),
     [hasContract, instance, hasSigner, isProcessing],
