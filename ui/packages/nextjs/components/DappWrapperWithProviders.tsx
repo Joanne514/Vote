@@ -31,25 +31,25 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
     setMounted(true);
   }, []);
 
-  // Always render QueryClientProvider to ensure hooks can access it
-  // Always render children inside QueryClientProvider so hooks work
-  // But delay rendering WagmiProvider and other client-only components until mounted
+  // Always render QueryClientProvider and WagmiProvider to ensure hooks can access them
+  // getWagmiConfig handles SSR internally (returns minimal config for SSR)
+  const wagmiConfig = getWagmiConfig();
+
   if (!mounted) {
     return (
       <QueryClientProvider client={queryClient}>
-        <div className="flex flex-col min-h-screen items-center justify-center">
-          <div className="loading loading-spinner loading-lg"></div>
-        </div>
-        {/* Render children but hide it - ensures hooks can access QueryClient */}
-        <div style={{ display: "none" }}>
-          <InMemoryStorageProvider>{children}</InMemoryStorageProvider>
-        </div>
+        <WagmiProvider config={wagmiConfig}>
+          <div className="flex flex-col min-h-screen items-center justify-center">
+            <div className="loading loading-spinner loading-lg"></div>
+          </div>
+          {/* Render children but hide it - ensures hooks can access QueryClient and WagmiProvider */}
+          <div style={{ display: "none" }}>
+            <InMemoryStorageProvider>{children}</InMemoryStorageProvider>
+          </div>
+        </WagmiProvider>
       </QueryClientProvider>
     );
   }
-
-  // Get wagmiConfig only on client side
-  const wagmiConfig = getWagmiConfig();
 
   return (
     <QueryClientProvider client={queryClient}>
