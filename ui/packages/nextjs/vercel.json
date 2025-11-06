@@ -1,4 +1,5 @@
 {
   "buildCommand": "cd packages/nextjs && npm run build",
-  "installCommand": "cd packages/fhevm-sdk && npm install --legacy-peer-deps && npm run build && cd ../nextjs && npm install --legacy-peer-deps"
+  "installCommand": "cd packages/fhevm-sdk && npm install --legacy-peer-deps && npm run build && cd ../nextjs && npm install --legacy-peer-deps",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./ui/package.json || echo 'package.json changed'"
 }
