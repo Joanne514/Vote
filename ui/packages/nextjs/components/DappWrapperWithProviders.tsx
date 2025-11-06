@@ -31,7 +31,7 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
     setMounted(true);
   }, []);
 
-  // Always render QueryClientProvider and WagmiProvider to ensure hooks can access them
+  // Always render QueryClientProvider, WagmiProvider, and RainbowKitProvider to ensure hooks can access them
   // getWagmiConfig handles SSR internally (returns minimal config for SSR)
   const wagmiConfig = getWagmiConfig();
 
@@ -39,13 +39,18 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
     return (
       <QueryClientProvider client={queryClient}>
         <WagmiProvider config={wagmiConfig}>
-          <div className="flex flex-col min-h-screen items-center justify-center">
-            <div className="loading loading-spinner loading-lg"></div>
-          </div>
-          {/* Render children but hide it - ensures hooks can access QueryClient and WagmiProvider */}
-          <div style={{ display: "none" }}>
-            <InMemoryStorageProvider>{children}</InMemoryStorageProvider>
-          </div>
+          <RainbowKitProvider
+            avatar={BlockieAvatar}
+            theme={lightTheme()}
+          >
+            <div className="flex flex-col min-h-screen items-center justify-center">
+              <div className="loading loading-spinner loading-lg"></div>
+            </div>
+            {/* Render children but hide it - ensures hooks can access all providers */}
+            <div style={{ display: "none" }}>
+              <InMemoryStorageProvider>{children}</InMemoryStorageProvider>
+            </div>
+          </RainbowKitProvider>
         </WagmiProvider>
       </QueryClientProvider>
     );
