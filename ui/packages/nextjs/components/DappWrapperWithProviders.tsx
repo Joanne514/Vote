@@ -50,8 +50,8 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
   }, []);
 
   return (
-    <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <WagmiProvider config={wagmiConfig}>
         <RainbowKitProvider
           avatar={BlockieAvatar}
           theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
@@ -65,7 +65,7 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
           </div>
           <Toaster />
         </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+      </WagmiProvider>
+    </QueryClientProvider>
   );
 };
