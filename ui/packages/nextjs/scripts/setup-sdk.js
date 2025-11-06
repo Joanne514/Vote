@@ -55,15 +55,11 @@ function copyRecursiveSync(src, dest) {
   }
 }
 
-// Also copy package.json for proper module resolution
-const sdkPackageJson = path.join(__dirname, '../../fhevm-sdk/package.json');
-const destPackageJson = path.join(sdkDest, 'package.json');
-
 console.log('📦 Copying SDK from', actualSdkSource, 'to', sdkDest);
 copyRecursiveSync(actualSdkSource, sdkDest);
 
-// Copy package.json
-const sdkPackageJson = path.join(path.dirname(actualSdkSource), 'package.json');
+// Copy package.json for proper module resolution
+const sdkPackageJson = path.join(path.dirname(actualSdkSource), '../package.json');
 const destPackageJson = path.join(sdkDest, 'package.json');
 
 if (fs.existsSync(sdkPackageJson)) {
