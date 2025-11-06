@@ -12,38 +12,22 @@ import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/helper";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
-// Create QueryClient instance
-const makeQueryClient = () => {
-  return new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-        staleTime: 60 * 1000, // 1 minute
-      },
-    },
-  });
-};
-
-let browserQueryClient: QueryClient | undefined = undefined;
-
-const getQueryClient = () => {
-  if (typeof window === "undefined") {
-    // Server: always make a new query client
-    return makeQueryClient();
-  } else {
-    // Browser: make a new query client if we don't already have one
-    if (!browserQueryClient) browserQueryClient = makeQueryClient();
-    return browserQueryClient;
-  }
-};
-
 export const DappWrapperWithProviders = ({ children }: { children: React.ReactNode }) => {
   const { resolvedTheme } = useTheme();
   const isDarkMode = resolvedTheme === "dark";
   const [mounted, setMounted] = useState(false);
   
-  // Ensure QueryClient is created
-  const queryClient = useMemo(() => getQueryClient(), []);
+  // Create QueryClient instance - always create a new one for SSR safety
+  const queryClient = useMemo(() => {
+    return new QueryClient({
+      defaultOptions: {
+        queries: {
+          refetchOnWindowFocus: false,
+          staleTime: 60 * 1000, // 1 minute
+        },
+      },
+    });
+  }, []);
 
   useEffect(() => {
     setMounted(true);
