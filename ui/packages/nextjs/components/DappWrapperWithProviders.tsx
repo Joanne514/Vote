@@ -31,7 +31,7 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
 
   return (
     <QueryClientProvider client={queryClient}>
-      <WagmiProvider config={wagmiConfig}>
+      <WagmiProvider config={wagmiConfig} queryClient={queryClient}>
         <RainbowKitProvider
           avatar={BlockieAvatar}
           theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
