@@ -268,7 +268,7 @@ export const useVotingWagmi = (parameters: {
         reqs.push({ handle, contractAddress: finalVotingContract.address as `0x${string}` });
       }
     }
-    return reqs.length > 0 ? (reqs as const) : undefined;
+    return reqs.length > 0 ? reqs : undefined;
   }, [hasContract, finalVotingContract, pollInfo, selectedPollId, encryptedCounts]);
 
   const { canDecrypt, decrypt, isDecrypting, message: decryptMsg, results } = useFHEDecrypt({
