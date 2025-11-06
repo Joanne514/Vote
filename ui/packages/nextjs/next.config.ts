@@ -14,6 +14,13 @@ const nextConfig: NextConfig = {
     config.resolve.fallback = { fs: false, net: false, tls: false };
     config.externals.push("pino-pretty", "lokijs", "encoding");
     
+    // Resolve @fhevm-sdk from node_modules
+    const sdkPath = path.resolve(__dirname, "./node_modules/@fhevm-sdk");
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@fhevm-sdk": sdkPath,
+    };
+    
     // Provide polyfill for idb in server-side rendering
     if (isServer) {
       // Replace idb with our polyfill using NormalModuleReplacementPlugin
