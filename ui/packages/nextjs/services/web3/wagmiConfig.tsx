@@ -59,6 +59,3 @@ export const getWagmiConfig = () => {
 
   return wagmiConfigInstance;
 };
-
-// Export for backward compatibility (but prefer getWagmiConfig)
-export const wagmiConfig = getWagmiConfig();
