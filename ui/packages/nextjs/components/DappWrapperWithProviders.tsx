@@ -32,12 +32,17 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
   }, []);
 
   // Always render QueryClientProvider to ensure hooks can access it
+  // Always render children inside QueryClientProvider so hooks work
   // But delay rendering WagmiProvider and other client-only components until mounted
   if (!mounted) {
     return (
       <QueryClientProvider client={queryClient}>
         <div className="flex flex-col min-h-screen items-center justify-center">
           <div className="loading loading-spinner loading-lg"></div>
+        </div>
+        {/* Render children but hide it - ensures hooks can access QueryClient */}
+        <div style={{ display: "none" }}>
+          <InMemoryStorageProvider>{children}</InMemoryStorageProvider>
         </div>
       </QueryClientProvider>
     );
