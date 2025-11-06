@@ -49,4 +49,5 @@ jobs:
           vercel-args: '--prod'
           working-directory: ./ui/packages/nextjs
         continue-on-error: true
+        if: false  # Temporarily disabled to avoid deployment limit
 
