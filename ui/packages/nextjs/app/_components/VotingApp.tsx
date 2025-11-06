@@ -456,7 +456,7 @@ export const VotingApp = () => {
                       className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
                       onClick={async () => {
                         if (!voting.canDecrypt) {
-                          setMessage("⚠️ Please allow decryption for at least one option first");
+                          voting.setMessage("⚠️ Please allow decryption for at least one option first");
                           return;
                         }
                         try {
@@ -467,7 +467,7 @@ export const VotingApp = () => {
                           }, 1000);
                         } catch (error) {
                           console.error("Decrypt error:", error);
-                          setMessage(`❌ Decryption failed: ${error instanceof Error ? error.message : String(error)}. Make sure you've authorized decryption for all options first.`);
+                          voting.setMessage(`❌ Decryption failed: ${error instanceof Error ? error.message : String(error)}. Make sure you've authorized decryption for all options first.`);
                         }
                       }}
                       disabled={!voting.canDecrypt || voting.isDecrypting}

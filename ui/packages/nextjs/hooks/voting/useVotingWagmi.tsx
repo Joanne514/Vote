@@ -772,6 +772,7 @@ export const useVotingWagmi = (parameters: {
     allowAdminToDecrypt,
     isProcessing,
     message,
+    setMessage,
     loadEncryptedCounts,
     refreshContractData,
   } as const;
