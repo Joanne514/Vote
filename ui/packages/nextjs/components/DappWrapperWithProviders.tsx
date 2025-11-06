@@ -10,7 +10,7 @@ import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
 import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/helper";
-import { wagmiConfig } from "~~/services/web3/wagmiConfig";
+import { getWagmiConfig } from "~~/services/web3/wagmiConfig";
 
 // Create QueryClient instance - must be created outside component to avoid recreating on each render
 const queryClient = new QueryClient({
@@ -35,6 +35,9 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
   if (!mounted) {
     return null;
   }
+
+  // Get wagmiConfig only on client side
+  const wagmiConfig = getWagmiConfig();
 
   return (
     <QueryClientProvider client={queryClient}>
