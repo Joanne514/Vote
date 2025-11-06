@@ -5,7 +5,7 @@ const path = require('path');
 // __dirname is ui/packages/nextjs/scripts
 // SDK is at ui/packages/fhevm-sdk/dist
 // Target is ui/packages/nextjs/node_modules/@fhevm-sdk
-const sdkSource = path.join(__dirname, '../fhevm-sdk/dist');
+const sdkSource = path.join(__dirname, '../../fhevm-sdk/dist');
 const sdkDest = path.join(__dirname, '../node_modules/@fhevm-sdk');
 
 // Create @fhevm-sdk directory
@@ -32,7 +32,7 @@ function copyRecursiveSync(src, dest) {
 }
 
 // Also copy package.json for proper module resolution
-const sdkPackageJson = path.join(__dirname, '../fhevm-sdk/package.json');
+const sdkPackageJson = path.join(__dirname, '../../fhevm-sdk/package.json');
 const destPackageJson = path.join(sdkDest, 'package.json');
 
 if (fs.existsSync(sdkSource)) {
