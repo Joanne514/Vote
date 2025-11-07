@@ -4,6 +4,10 @@ An MVP DApp where employees privately submit their monthly salary (encrypted wit
 an encrypted sum and a public participant count. Only the HR admin can decrypt the aggregated sum; the average salary
 is computed client-side by HR as sum / count. Individual salaries remain private at all times.
 
+## Live Demo
+
+- Testnet deployment (connect wallet required): [vote1-ib39.vercel.app](https://vote1-ib39.vercel.app/)
+
 ## Quick Start
 
 For detailed instructions see:
