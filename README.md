@@ -7,6 +7,21 @@ is computed client-side by HR as sum / count. Individual salaries remain private
 ## Live Demo
 
 - Testnet deployment (connect wallet required): [vote1-ib39.vercel.app](https://vote1-ib39.vercel.app/)
+- Screen capture walkthrough: [vote.mp4](./vote.mp4)
+
+## 🧾 Smart Contracts
+
+- [`contracts/Voting.sol`](./contracts/Voting.sol) — on-chain poll management with end-to-end encrypted vote storage and tallied ciphertexts per option.
+- [`contracts/SalaryAggregator.sol`](./contracts/SalaryAggregator.sol) — encrypted salary submissions aggregated into a single ciphertext sum with a public counter for HR-only decryption.
+- [`contracts/FHECounter.sol`](./contracts/FHECounter.sol) — minimal example used for smoke tests and SDK validation.
+- [`ui/packages/nextjs/contracts/deployedContracts.ts`](./ui/packages/nextjs/contracts/deployedContracts.ts) — generated address/ABI registry consumed by the frontend and hooks.
+
+## 🔑 Key Encryption & Decryption Flow
+
+- **Client-side encryption** — Frontend hooks such as [`useVotingWagmi`](./ui/packages/nextjs/hooks/voting/useVotingWagmi.tsx) and [`useSalaryAggregatorWagmi`](./ui/packages/nextjs/hooks/salary/useSalaryAggregatorWagmi.tsx) call `useFHEEncryption` from `@fhevm-sdk` to fetch public keys and encrypt payloads before every contract write.
+- **Relayer-friendly ciphertext handling** — Contract requests are built with `buildParamsFromAbi` so encrypted arguments line up with ABI expectations, and the resulting ciphertext is submitted directly to the target contract via wagmi/ethers providers.
+- **Secure decryption pipeline** — Authorized users trigger `useFHEDecrypt`, which coordinates with the relayer SDK and in-memory signature store (`useInMemoryStorage`) to obtain signed decrypt permissions, then updates local React Query caches to show decrypted tallies or salary averages client-side.
+- **Data freshness & retries** — `useQueryClient` invalidates vote and salary queries after every successful transaction so decrypted results stay in sync with on-chain ciphertext snapshots.
 
 ## Quick Start
 
