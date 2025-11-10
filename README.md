@@ -7,7 +7,7 @@ is computed client-side by HR as sum / count. Individual salaries remain private
 ## Live Demo
 
 - Testnet deployment (connect wallet required): [vote1-ib39.vercel.app](https://vote1-ib39.vercel.app/)
-- Screen capture walkthrough: [vote.mp4](./vote.mp4)
+- Screen capture walkthrough: [Watch the demo](https://github.com/Joanne514/Vote/raw/main/vote.mp4)
 
 ## 🧾 Smart Contracts
 
